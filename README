@@ -5,3 +5,19 @@ It's based on traits, which means every class can implement the event system as 
 class MyClass {
     use Events;
 }
+
+Binding and triggering events is equally simple:
+
+$class = new MyClass();
+$class->bind("boom", function() {
+    echo "headshot";
+});
+$class->trigger("boom");
+
+You can also pass in arguments:
+
+$class = new MyClass();
+$class->bind("hello", function($name) {
+    echo "hello " . $name;
+});
+$class->trigger("hello", "Peeter");
