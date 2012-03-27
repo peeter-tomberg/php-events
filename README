@@ -1,0 +1,7 @@
+PHP-Events is a php events system for PHP 5.4
+
+It's based on traits, which means every class can implement the event system as easily as:
+
+class MyClass {
+    use Events;
+}
