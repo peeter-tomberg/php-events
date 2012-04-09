@@ -1,0 +1,101 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Php-events by peeter-tomberg</title>
+    
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Php-events</h1>
+        <p></p>
+        <p class="view"><a href="https://github.com/peeter-tomberg/php-events">View the Project on GitHub <small>peeter-tomberg/php-events</small></a></p>
+        <ul>
+          <li><a href="https://github.com/peeter-tomberg/php-events/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/peeter-tomberg/php-events/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/peeter-tomberg/php-events">Fork On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <p>PHP-Events is a php events system for PHP 5.4</p>
+
+<p>It's based on traits, which means every class can implement the event system as easily as:</p>
+
+<div class="highlight">
+<pre><span class="cp">&lt;?php</span>
+<span class="k">class</span> <span class="nc">MyClass</span> <span class="p">{</span>
+    <span class="k">use</span> <span class="nx">Events</span><span class="p">;</span>
+<span class="p">}</span>
+</pre>
+</div>
+
+
+<h2>Binding and triggering events</h2>
+
+<div class="highlight">
+<pre><span class="cp">&lt;?php</span>
+<span class="nv">$class</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MyClass</span><span class="p">();</span>
+<span class="nv">$class</span><span class="o">-&gt;</span><span class="na">bind</span><span class="p">(</span><span class="s2">"boom"</span><span class="p">,</span> <span class="k">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">echo</span> <span class="s2">"headshot"</span><span class="p">;</span>
+<span class="p">});</span>
+<span class="nv">$class</span><span class="o">-&gt;</span><span class="na">trigger</span><span class="p">(</span><span class="s2">"boom"</span><span class="p">);</span>
+</pre>
+</div>
+
+
+<p>You can also pass in arguments:</p>
+
+<div class="highlight">
+<pre><span class="cp">&lt;?php</span>
+<span class="nv">$class</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MyClass</span><span class="p">();</span>
+<span class="nv">$class</span><span class="o">-&gt;</span><span class="na">bind</span><span class="p">(</span><span class="s2">"hello"</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$name</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">echo</span> <span class="s2">"hello "</span> <span class="o">.</span> <span class="nv">$name</span><span class="p">;</span>
+<span class="p">});</span>
+<span class="nv">$class</span><span class="o">-&gt;</span><span class="na">trigger</span><span class="p">(</span><span class="s2">"hello"</span><span class="p">,</span> <span class="s2">"Peeter"</span><span class="p">);</span>
+</pre>
+</div>
+
+
+<h2>Priority and stopping event propagation </h2>
+
+<p>By default, all events are triggered in the order they are binded. 
+You can change that by assiging a priority to an event, and returning false to stop propagation.</p>
+
+<div class="highlight">
+<pre><span class="cp">&lt;?php</span>
+<span class="nv">$class</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MyClass</span><span class="p">();</span>
+<span class="nv">$class</span><span class="o">-&gt;</span><span class="na">bind</span><span class="p">(</span><span class="s2">"hello"</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$name</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">echo</span> <span class="s2">"hello "</span> <span class="o">.</span> <span class="nv">$name</span><span class="p">;</span>
+<span class="p">});</span>
+<span class="nv">$class</span><span class="o">-&gt;</span><span class="na">bind</span><span class="p">(</span><span class="s2">"hello"</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$name</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">echo</span> <span class="s2">"hello my dear sir "</span> <span class="o">.</span> <span class="nv">$name</span><span class="p">;</span>
+    <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+
+<span class="p">},</span> <span class="mi">2</span><span class="p">);</span>
+<span class="nv">$class</span><span class="o">-&gt;</span><span class="na">trigger</span><span class="p">(</span><span class="s2">"hello"</span><span class="p">,</span> <span class="s2">"Peeter"</span><span class="p">);</span>
+</pre>
+</div>
+
+
+<p>Would produce</p>
+
+<pre>
+hello my dear sir Peeter
+</pre>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/peeter-tomberg">peeter-tomberg</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+  </body>
+</html>
