@@ -8,7 +8,8 @@ class MyClass {
 }
 </pre>
 
-Binding and triggering events is equally simple:
+Binding and triggering events
+-----------------------------
 
 <pre>
 $class = new MyClass();
@@ -26,4 +27,26 @@ $class->bind("hello", function($name) {
     echo "hello " . $name;
 });
 $class->trigger("hello", "Peeter");
+</pre>
+
+This also supports priority and stopping event propagation. By default, all events are triggered in the order they are binded. 
+You can change that by assiging a priority to an event, and returning false to stop propagation.
+
+<pre>
+$class = new MyClass();
+$class->bind("hello", function($name) {
+    echo "hello " . $name;
+});
+$class->bind("hello", function($name) {
+    echo "hello my dear sir " . $name;
+    return false;
+    
+}, 2);
+$class->trigger("hello", "Peeter");
+</pre>
+
+Would produce
+
+<pre>
+hello my dear sir Peeter
 </pre>
