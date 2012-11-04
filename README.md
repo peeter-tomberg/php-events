@@ -29,7 +29,7 @@ $class->bind("hello", function($name) {
 $class->trigger("hello", "Peeter");
 </pre>
 
-This also supports priority and stopping event propagation. By default, all events are triggered in the order they are binded. 
+This also supports priority and stopping event propagation. By default, all events are triggered in the order they are bound. 
 You can change that by assiging a priority to an event, and returning false to stop propagation.
 
 <pre>
